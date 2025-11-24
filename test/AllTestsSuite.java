@@ -6,7 +6,9 @@ import org.junit.platform.suite.api.Suite;
         HorseTest.class,
         StableTest.class,
         StableManagerTest.class,
-        StableFacadeTest.class
+        StableFacadeTest.class,
+        StableTableModelTest.class,
+        HorseTableModelTest.class,
 })
 public class AllTestsSuite {
     // Pusta klasa - adnotacje robią robotę
