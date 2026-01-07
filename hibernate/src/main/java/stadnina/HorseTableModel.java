@@ -1,12 +1,12 @@
+package stadnina;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Model tabeli dla koni
- */
 public class HorseTableModel extends AbstractTableModel {
-    private final String[] columnNames = {"Imię", "Rasa", "Typ", "Status", "Wiek", "Cena (PLN)", "Waga (kg)"};
+    // Dodano kolumnę "Liczba ocen" zgodnie z wymogiem
+    private final String[] columnNames = {"Imię", "Rasa", "Typ", "Status", "Wiek", "Cena", "Waga", "Oceny"};
     private List<Horse> horses;
 
     public HorseTableModel() {
@@ -19,9 +19,7 @@ public class HorseTableModel extends AbstractTableModel {
     }
 
     public Horse getHorseAt(int row) {
-        if (row >= 0 && row < horses.size()) {
-            return horses.get(row);
-        }
+        if (row >= 0 && row < horses.size()) return horses.get(row);
         return null;
     }
 
@@ -46,26 +44,17 @@ public class HorseTableModel extends AbstractTableModel {
         switch (columnIndex) {
             case 0: return horse.getName();
             case 1: return horse.getBreed();
-            case 2: return horse.getType().toString();
-            case 3: return horse.getStatus().toString();
+            case 2: return horse.getType();
+            case 3: return horse.getStatus();
             case 4: return horse.getAge();
-            case 5: return String.format("%.2f", horse.getPrice());
-            case 6: return String.format("%.1f", horse.getWeight());
+            case 5: return String.format("%.2f PLN", horse.getPrice());
+            case 6: return String.format("%.1f kg", horse.getWeight());
+            case 7:
+                // Wyświetlanie średniej ocen (wymóg PDF)
+                if (horse.getRatings().isEmpty()) return "Brak";
+                double avg = horse.getRatings().stream().mapToInt(Rating::getValue).average().orElse(0.0);
+                return String.format("%.2f (%d głosów)", avg, horse.getRatings().size());
             default: return null;
         }
-    }
-
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0: case 1: case 2: case 3: case 5: case 6: return String.class;
-            case 4: return Integer.class;
-            default: return Object.class;
-        }
-    }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false; // Tylko odczyt
     }
 }

@@ -1,3 +1,5 @@
+package stadnina;
+
 public enum HorseCondition {
     ZDROWY("Zdrowy"),
     CHORY("Chory"),

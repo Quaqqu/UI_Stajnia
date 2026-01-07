@@ -1,28 +1,23 @@
+package stadnina;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Model tabeli dla stadnin
- */
 public class StableTableModel extends AbstractTableModel {
-    private final String[] columnNames = {"Nazwa", "Konie", "Pojemność", "Zapełnienie %"};
+    private final String[] columnNames = {"Nazwa", "Liczba koni", "Pojemność", "Zapełnienie"};
+
+    // ZMIANA: Teraz lista trzyma StableInfo, a nie Stable
     private List<StableFacade.StableInfo> stables;
 
     public StableTableModel() {
         this.stables = new ArrayList<>();
     }
 
+    // ZMIANA: Metoda przyjmuje listę StableInfo
     public void setStables(List<StableFacade.StableInfo> stables) {
         this.stables = stables;
         fireTableDataChanged();
-    }
-
-    public StableFacade.StableInfo getStableAt(int row) {
-        if (row >= 0 && row < stables.size()) {
-            return stables.get(row);
-        }
-        return null;
     }
 
     @Override
@@ -43,6 +38,7 @@ public class StableTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         StableFacade.StableInfo stable = stables.get(rowIndex);
+
         switch (columnIndex) {
             case 0: return stable.getName();
             case 1: return stable.getCurrentHorses();
@@ -50,21 +46,5 @@ public class StableTableModel extends AbstractTableModel {
             case 3: return String.format("%.1f%%", stable.getCurrentLoad());
             default: return null;
         }
-    }
-
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0: return String.class;
-            case 1: return Integer.class;
-            case 2: return Integer.class;
-            case 3: return String.class;
-            default: return Object.class;
-        }
-    }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false; // Tylko odczyt
     }
 }

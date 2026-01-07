@@ -1,3 +1,5 @@
+package stadnina;
+
 public enum HorseType {
     ZIMNOKRWISTY("Zimnokrwisty"),
     GORACOKRWISTY("Gorącokrwisty");
